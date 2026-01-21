@@ -1,0 +1,44 @@
+{
+  "name": "fuel-vite-plugin",
+  "version": "1.0.0",
+  "description": "Vite configuration helper for FuelPHP + Vue",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "clean": "rm -rf dist",
+    "prepare": "npm run build"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./inertia-helpers": {
+      "types": "./dist/inertia-helpers/index.d.ts",
+      "default": "./dist/inertia-helpers/index.js"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "axios": "^1.13.2",
+    "tsup": "^8.3.6",
+    "typescript": "^5.9.2",
+    "vite": "^6.4.1"
+  },
+  "homepage": "https://github.com/Daiki52/fuel-vite-plugin",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/Daiki52/fuel-vite-plugin"
+  },
+  "keywords": [
+    "fuelphp",
+    "vite",
+    "vue",
+    "inertia"
+  ],
+  "license": "MIT"
+}
