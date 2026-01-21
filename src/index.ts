@@ -1,6 +1,6 @@
 import { promises as fs, rmSync } from "node:fs";
 import { resolve } from "node:path";
-import type { Plugin, ResolvedConfig, UserConfig } from "vite";
+import type { PluginOption, ResolvedConfig, UserConfig } from "vite";
 
 export type FuelViteConfigOptions = {
   command?: "build" | "serve";
@@ -53,7 +53,7 @@ const buildConfig = ({
   };
 };
 
-const fuelViteConfig = (options: FuelViteConfigOptions): Plugin => ({
+const fuelViteConfig = (options: FuelViteConfigOptions): PluginOption => ({
   name: "fuel-vite-plugin",
   config(_, env) {
     const command = options.command ?? env.command;

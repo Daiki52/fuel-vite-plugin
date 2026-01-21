@@ -1,6 +1,6 @@
 {
   "name": "fuel-vite-plugin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Vite configuration helper for FuelPHP + Vue",
   "type": "module",
   "files": [
@@ -23,16 +23,16 @@
     }
   },
   "devDependencies": {
-    "@types/node": "^24.1.0",
+    "@types/node": "^25.0.9",
     "axios": "^1.13.2",
-    "tsup": "^8.3.6",
-    "typescript": "^5.9.2",
-    "vite": "^6.4.1"
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "homepage": "https://github.com/Daiki52/fuel-vite-plugin",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/Daiki52/fuel-vite-plugin"
+    "type": "git",
+    "url": "https://github.com/Daiki52/fuel-vite-plugin"
   },
   "keywords": [
     "fuelphp",
