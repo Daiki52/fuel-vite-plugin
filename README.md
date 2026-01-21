@@ -1,6 +1,8 @@
 # fuel-vite-plugin
 
 A small helper to simplify Vite configuration for FuelPHP + Vue (Inertia).
+This package assumes it is used together with
+[Daiki52/fuel-vue](https://github.com/daiki52/fuel-vue).
 
 ## Usage
 
@@ -40,14 +42,7 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .mount(el)
-    },
-    progress: {
-        // The delay after which the progress bar will appear, in milliseconds...
-        delay: 250,
-        color: '#29d',
-        includeCSS: true,
-        showSpinner: true,
-    },
+    }
 })
 
 ```
