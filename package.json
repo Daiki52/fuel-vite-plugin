@@ -1,6 +1,6 @@
 {
   "name": "fuel-vite-plugin",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Vite configuration helper for FuelPHP + Vue",
   "type": "module",
   "files": [
@@ -22,14 +22,14 @@
       "default": "./dist/inertia-helpers/index.js"
     }
   },
+  "peerDependencies": {
+    "@inertiajs/vue3": "^2.3.11",
+    "vite": "^6.4.1"
+  },
   "devDependencies": {
     "@types/node": "^25.0.9",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3"
-  },
-  "peerDependencies": {
-    "axios": "^1.13.2",
-    "vite": "^7.0.0"
   },
   "homepage": "https://github.com/Daiki52/fuel-vite-plugin",
   "repository": {
