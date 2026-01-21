@@ -1,4 +1,5 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
+import { client } from "laravel-precognition";
 
 const DEFAULT_COOKIE_NAME = "fuel_csrf_token";
 
@@ -21,12 +22,11 @@ export type FuelCsrfOptions = {
   axiosInstance?: AxiosInstance;
 };
 
-/** Attach FuelPHP CSRF token to mutating Axios requests. */
-export const setupFuelCsrf = ({
-  cookieName = DEFAULT_COOKIE_NAME,
-  axiosInstance = axios,
-}: FuelCsrfOptions = {}): (() => void) => {
-  const interceptorId = axiosInstance.interceptors.request.use((config) => {
+const attachCsrfInterceptor = (
+  axiosInstance: AxiosInstance,
+  cookieName: string
+): number =>
+  axiosInstance.interceptors.request.use((config) => {
     const method = (config.method ?? "get").toLowerCase();
     if (!"post put patch delete".split(" ").includes(method)) {
       return config;
@@ -73,8 +73,23 @@ export const setupFuelCsrf = ({
     return config;
   });
 
+/** Attach FuelPHP CSRF token to mutating Axios requests. */
+export const setupFuelCsrf = ({
+  cookieName = DEFAULT_COOKIE_NAME,
+  axiosInstance = axios,
+}: FuelCsrfOptions = {}): (() => void) => {
+  const interceptorId = attachCsrfInterceptor(axiosInstance, cookieName);
+  const precognitionAxios = client.axios();
+  const precognitionInterceptorId =
+    precognitionAxios === axiosInstance
+      ? null
+      : attachCsrfInterceptor(precognitionAxios, cookieName);
+
   return () => {
     axiosInstance.interceptors.request.eject(interceptorId);
+    if (precognitionInterceptorId !== null) {
+      precognitionAxios.interceptors.request.eject(precognitionInterceptorId);
+    }
   };
 };
 

@@ -11,7 +11,7 @@ export default defineConfig([
     clean: true,
     target: "es2020",
     platform: "node",
-    external: ["axios", "vite"],
+    external: ["vite"],
   },
   {
     entry: {
@@ -23,6 +23,6 @@ export default defineConfig([
     clean: false,
     target: "es2020",
     platform: "browser",
-    external: ["axios", "vite"],
+    external: ["axios", "laravel-precognition"],
   },
 ]);

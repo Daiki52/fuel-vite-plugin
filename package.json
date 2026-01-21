@@ -1,6 +1,6 @@
 {
   "name": "fuel-vite-plugin",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "Vite configuration helper for FuelPHP + Vue",
   "type": "module",
   "files": [
