@@ -1,6 +1,6 @@
 {
   "name": "fuel-vite-plugin",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Vite configuration helper for FuelPHP + Vue",
   "type": "module",
   "files": [
@@ -24,7 +24,7 @@
   },
   "peerDependencies": {
     "@inertiajs/vue3": "^2.3.11",
-    "vite": "^6.4.1"
+    "vite": "^7.3.1"
   },
   "devDependencies": {
     "@types/node": "^25.0.9",
