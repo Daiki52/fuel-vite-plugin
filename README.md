@@ -23,11 +23,37 @@ export default defineConfig({
 ## Inertia helpers
 
 ```ts
-import { setupFuelCsrf, resolvePageComponent } from "fuel-vite-plugin/inertia-helpers";
+import { resolvePageComponent, setupFuelCsrf } from 'fuel-vite-plugin/inertia-helpers'
+
+import { createApp, h, type DefineComponent } from 'vue'
+import { createInertiaApp } from '@inertiajs/vue3'
+
+setupFuelCsrf()
+
+createInertiaApp({
+    resolve: (name) =>
+        resolvePageComponent(
+            `./components/Pages/${name}.vue`,
+            import.meta.glob<DefineComponent>('./components/Pages/**/*.vue'),
+        ),
+    setup({ el, App, props, plugin }) {
+        createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .mount(el)
+    },
+    progress: {
+        // The delay after which the progress bar will appear, in milliseconds...
+        delay: 250,
+        color: '#29d',
+        includeCSS: true,
+        showSpinner: true,
+    },
+})
+
 ```
 
-`setupFuelCsrf` attaches the FuelPHP CSRF token from cookies to mutating Axios requests.
-`resolvePageComponent` resolves Inertia page components from a Vite glob map.
+- `setupFuelCsrf` attaches the FuelPHP CSRF token from cookies to mutating Axios requests.
+- `resolvePageComponent` resolves Inertia page components from a Vite glob map.
 
 ## Options
 
