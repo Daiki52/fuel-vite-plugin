@@ -16,7 +16,7 @@ export default defineConfig({
     vue(),
     fuelViteConfig({
       rootDir: __dirname,
-      inputs: ["src/main.ts", "src/app.ts"],
+      input: ["resources/js/main.ts", "resources/js/app.ts"],
     }),
   ],
 });
@@ -53,12 +53,11 @@ createInertiaApp({
 ## Options
 
 - `rootDir`: FuelPHP project root directory
-- `resourcesDirName`: resources directory name (default: `resources`)
-- `publicDirName`: public directory name (default: `public`)
-- `outDirName`: build output directory (default: `public/build`)
-- `inputs`: entry point array (required)
+- `publicDirectory`: public directory name (default: `public`)
+- `buildDirectory`: build output directory relative to `publicDirectory` (default: `build`)
+- `input`: entry point array (required)
 - `command`: set Vite command explicitly (`build`/`serve`)
-- `hotfile`: write `public/hot` on dev server start (default: `true`)
+- `hotFile`: hot file path relative to `rootDir` (default: `${publicDirectory}/hot`)
 
 ## Build
 

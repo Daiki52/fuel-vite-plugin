@@ -1,57 +1,68 @@
 import { promises as fs, rmSync } from "node:fs";
 import { resolve } from "node:path";
 import type { Plugin, ResolvedConfig, UserConfig } from "vite";
+
+
 export type FuelViteConfigOptions = {
+  /** Vite command override (defaults to Vite env command). */
   command?: "build" | "serve";
+  /** FuelPHP project root directory (defaults to process.cwd()). */
   rootDir?: string;
-  resourcesDirName?: string;
-  publicDirName?: string;
-  outDirName?: string;
-  inputs: string[];
-  hotfile?: boolean;
+  /** Public directory name relative to the root (default: "public"). */
+  publicDirectory?: string;
+  /** Build output directory relative to publicDirectory (default: "build"). */
+  buildDirectory?: string;
+  /** Entry points relative to rootDir (required). */
+  input: string[];
+  /** Hot file path relative to rootDir (default: `${publicDirectory}/hot`). */
+  hotFile?: string;
 };
 
 type FuelConfigMeta = {
-  hotfile: boolean;
   hotFilePath: string;
   rootDir: string;
 };
 
+/**
+ * Build a Vite configuration tailored for FuelPHP + Inertia.
+ */
 const buildConfig = ({
   command,
   rootDir = process.cwd(),
-  resourcesDirName = "resources",
-  publicDirName = "public",
-  outDirName = "public/build",
-  inputs,
-  hotfile = true,
+  publicDirectory = "public",
+  buildDirectory = "build",
+  input,
+  hotFile,
 }: FuelViteConfigOptions): UserConfig & { __fuel: FuelConfigMeta } => {
-  const resourcesDir = resolve(rootDir, resourcesDirName);
-  const hotFilePath = resolve(rootDir, publicDirName, "hot");
-  if (!Array.isArray(inputs) || inputs.length === 0) {
-    throw new Error("fuel-vite-plugin: inputs is required and must be a non-empty array.");
+  const resourcesDir = resolve(rootDir, "resources");
+  const hotFilePath = resolve(rootDir, hotFile ?? `${publicDirectory}/hot`);
+  const basePath = buildDirectory.replace(/^\/+|\/+$/g, "");
+  if (!Array.isArray(input) || input.length === 0) {
+    throw new Error("fuel-vite-plugin: input is required and must be a non-empty array.");
   }
 
   return {
     root: resourcesDir,
-    base: command === "build" ? "/build/" : "/",
-    publicDir: resolve(resourcesDir, publicDirName),
+    base: command === "build" ? `/${basePath}/` : "/",
+    publicDir: resolve(rootDir, publicDirectory),
     build: {
       manifest: "manifest.json",
       rollupOptions: {
-        input: inputs.map((input) => resolve(resourcesDir, input)),
+        input: input.map((entry) => resolve(rootDir, entry)),
       },
-      outDir: resolve(rootDir, outDirName),
+      outDir: resolve(rootDir, publicDirectory, buildDirectory),
       emptyOutDir: true,
     },
     __fuel: {
-      hotfile,
       hotFilePath,
       rootDir,
     },
   };
 };
 
+/**
+ * FuelPHP-specific Vite plugin for resolving resources and hotfile handling.
+ */
 const fuelViteConfig = (options: FuelViteConfigOptions): Plugin => ({
   name: "fuel-vite-plugin",
   config(_, env) {
@@ -60,11 +71,6 @@ const fuelViteConfig = (options: FuelViteConfigOptions): Plugin => ({
   },
   async configureServer(server) {
     const fuelConfig = server.config as ResolvedConfig & { __fuel?: FuelConfigMeta };
-    const hotfileEnabled = fuelConfig.__fuel?.hotfile ?? true;
-    if (!hotfileEnabled) {
-      return;
-    }
-
     const hotFilePath = fuelConfig.__fuel?.hotFilePath ?? resolve(process.cwd(), "public", "hot");
     let cleanedUp = false;
 

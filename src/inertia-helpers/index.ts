@@ -1,14 +1,21 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios";
 import { client } from "laravel-precognition";
 
+/** Default FuelPHP CSRF cookie name. */
 const DEFAULT_COOKIE_NAME = "fuel_csrf_token";
 
+/**
+ * Read a cookie value by name.
+ */
 const getCookie = (name: string): string | undefined => {
   const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const match = document.cookie.match(new RegExp(`(?:^|; )${escaped}=([^;]*)`));
   return match ? decodeURIComponent(match[1] ?? "") : undefined;
 };
 
+/**
+ * Determine if the request should carry JSON payload.
+ */
 const hasJsonBody = (config: AxiosRequestConfig): boolean => {
   const headers = (config.headers ?? {}) as Record<string, unknown>;
   const contentType = headers["Content-Type"] ?? headers["content-type"];
@@ -22,6 +29,9 @@ export type FuelCsrfOptions = {
   axiosInstance?: AxiosInstance;
 };
 
+/**
+ * Attach FuelPHP CSRF token to an Axios instance and return the interceptor id.
+ */
 const attachCsrfInterceptor = (
   axiosInstance: AxiosInstance,
   cookieName: string
