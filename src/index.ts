@@ -34,7 +34,6 @@ const buildConfig = ({
   input,
   hotFile,
 }: FuelViteConfigOptions): UserConfig & { __fuel: FuelConfigMeta } => {
-  const resourcesDir = resolve(rootDir, "resources");
   const hotFilePath = resolve(rootDir, hotFile ?? `${publicDirectory}/hot`);
   const basePath = buildDirectory.replace(/^\/+|\/+$/g, "");
   if (!Array.isArray(input) || input.length === 0) {
@@ -42,7 +41,7 @@ const buildConfig = ({
   }
 
   return {
-    root: resourcesDir,
+    root: rootDir,
     base: command === "build" ? `/${basePath}/` : "/",
     publicDir: resolve(rootDir, publicDirectory),
     build: {
