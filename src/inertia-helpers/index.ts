@@ -13,15 +13,6 @@ const getCookie = (name: string): string | undefined => {
   return match ? decodeURIComponent(match[1] ?? "") : undefined;
 };
 
-/**
- * Determine if the request should carry JSON payload.
- */
-const hasJsonBody = (config: AxiosRequestConfig): boolean => {
-  const headers = (config.headers ?? {}) as Record<string, unknown>;
-  const contentType = headers["Content-Type"] ?? headers["content-type"];
-  return !contentType || String(contentType).includes("application/json");
-};
-
 export type FuelCsrfOptions = {
   /** Cookie name that stores the FuelPHP CSRF token. */
   cookieName?: string;
