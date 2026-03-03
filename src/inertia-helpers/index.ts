@@ -42,10 +42,6 @@ const attachCsrfInterceptor = (
       return config;
     }
 
-    if (!hasJsonBody(config)) {
-      return config;
-    }
-
     const token = getCookie(cookieName);
     if (!token) {
       return config;
